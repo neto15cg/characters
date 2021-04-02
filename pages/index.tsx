@@ -1,8 +1,4 @@
-import React, { useEffect } from 'react';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { LoginStateProps } from '../store/reducer';
-import { clearState, doLogin } from '../store/actions';
+import React from 'react';
 import Header from '../containers/Header/Header';
 import Home from '../containers/Home/Home';
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Behaviors, Fonts } from '../../utils/theme';
+import { Behaviors, device, Fonts } from '../../utils/theme';
 
 export const InputContainer = styled.div`
   max-width: 340px;
@@ -38,4 +38,9 @@ export const FilterContainer = styled.div`
 
 export const SelectContainer = styled.div`
   max-width: 200px;
+  margin: 8px;
+  ${device.mobile} {
+    width: 100%;
+    max-width: 100%;
+  }
 `;
