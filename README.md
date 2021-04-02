@@ -1,17 +1,17 @@
-# Challenge Login
+# Characters
 
-- Access the application statement at the [link](https://challenge-login.vercel.app/)
+- Access the application statement at the [link]()
 
 ## Description
 
-The challenge is to create a login page using nextjs with the following technologies:
+The challenge is to create a list of characters page using nextjs with the following technologies:
 
 - Typescript
 - React
 - Hooks
 - NextJS
 - Styled Components
-- Redux & Redux Saga
+- Redux & Redux Thunk
 - Axios
 
 # Setup
