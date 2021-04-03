@@ -32,9 +32,9 @@ export interface LoadingSection {
 
 export interface CharactersState {
   data: {
+    currentPage: number;
     characters?: CharactersResponse;
     characterDetail?: CharacterDetailTypeResponse;
-    currentPage: number;
   };
 
   loading: LoadingSection;

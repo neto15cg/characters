@@ -1,9 +1,10 @@
 import React from 'react';
+import BasicLoading from '../../components/basicLoading/BasicLoading';
 import Button from '../../components/button/Button';
-import { BasicLoading } from '../../components/button/Button.styles';
 import { ErrorContainer, ErrorSubTitle, ErrorTitle, LoadingContainer } from '../../components/common/Common';
 import Section from '../../components/section/Section';
 import SvgIcon from '../../components/svgIcon/SvgIcon';
+import { CharacterDetailTypeResponse } from '../../store/ducks/types';
 import {
   BackContainer,
   Description,
@@ -12,10 +13,20 @@ import {
   Information,
   InformationsContainer,
   Name,
+  StyledFabButton,
 } from './Detail.styles';
 import { DetailProps } from './Detail.types';
 
-const Detail = ({ character: characterResponse, loading, onGoBack, error, onRefreshRequest }: DetailProps) => {
+const Detail = ({
+  character: characterResponse,
+  loading,
+  onGoBack,
+  error,
+  onRefreshRequest,
+  onAddFavorite,
+  onRemoveFavorite,
+  isFavorite,
+}: DetailProps) => {
   const character = characterResponse?.results;
 
   const handleGoBack = () => {
@@ -27,6 +38,16 @@ const Detail = ({ character: characterResponse, loading, onGoBack, error, onRefr
   const handleReloadPage = () => {
     if (onRefreshRequest) {
       onRefreshRequest();
+    }
+  };
+
+  const handleFavorite = (character: CharacterDetailTypeResponse) => {
+    if (!isFavorite && onAddFavorite) {
+      return onAddFavorite(character);
+    }
+
+    if (isFavorite && onRemoveFavorite) {
+      return onRemoveFavorite(character);
     }
   };
 
@@ -71,6 +92,14 @@ const Detail = ({ character: characterResponse, loading, onGoBack, error, onRefr
             </Information>
           )}
           {!!character?.birth && <Information>{character.birth}</Information>}
+          <StyledFabButton onClick={handleFavorite}>
+            <SvgIcon
+              src={'/assets/icons/heart.svg'}
+              width="32px"
+              height="32px"
+              fill={isFavorite ? '#FE1111' : '#c3c3c3'}
+            />
+          </StyledFabButton>
         </InformationsContainer>
       </HighLight>
 

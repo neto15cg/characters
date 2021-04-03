@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../containers/header/Header';
 import Home from '../containers/home/Home';
-import { LoadMore } from '../components/loadingMore/LoadingMore';
 import { listCharacters } from '../store/ducks/characters';
 import { RootState } from '../store/ducks/state';
 
@@ -10,6 +9,8 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const { data: dataCharacters, loading, error } = useSelector((state: RootState) => state.characters);
   const { characters, currentPage } = dataCharacters;
+  const { data: favoriteData } = useSelector((state: RootState) => state.favoriteCharacters);
+  const { favoriteCharacters } = favoriteData;
 
   useEffect(() => {
     if (!characters) {
@@ -21,8 +22,6 @@ const HomePage = () => {
 
   const handleRefresh = () => handleMoreCharacters(currentPage);
 
-  const numberOfPage = Math.round((characters && characters.number_of_total_results / characters.limit) || 1);
-
   return (
     <>
       <main>
@@ -32,10 +31,11 @@ const HomePage = () => {
           firstLoading={!!(!characters && loading['loading.list'])}
           onRefreshRequest={handleRefresh}
           error={error.characters}
+          favoriteCharacters={favoriteCharacters}
+          onMore={handleMoreCharacters}
+          currentPage={currentPage}
+          loadingMore={loading['loading.list']}
         />
-        {characters && numberOfPage > currentPage && (
-          <LoadMore isFetching={loading['loading.list']} page={currentPage} callback={handleMoreCharacters} />
-        )}
       </main>
     </>
   );

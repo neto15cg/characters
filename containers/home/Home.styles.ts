@@ -48,3 +48,13 @@ export const SelectContainer = styled.div`
     max-width: 100%;
   }
 `;
+
+export const EmptyStateContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  font-size: 18px;
+  color: ${Behaviors.darkText};
+`;

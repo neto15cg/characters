@@ -137,3 +137,11 @@ export const BackContainer = styled.div`
   padding-left: 8px;
   margin-bottom: 16px;
 `;
+
+export const StyledFabButton = styled.button`
+  background-color: transparent;
+  border: none;
+  outline: 0;
+  padding: 0;
+  cursor: pointer;
+`;

@@ -171,3 +171,9 @@ export interface CharacterDetailTypeResponse {
   results: CharacterDetailType;
   version: string;
 }
+
+export interface FavoriteCharacterType {
+  id: number;
+  name: string;
+  image: Image;
+}

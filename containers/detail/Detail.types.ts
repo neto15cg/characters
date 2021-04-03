@@ -6,4 +6,7 @@ export interface DetailProps {
   onGoBack?: () => void;
   error?: any;
   onRefreshRequest?: () => void;
+  isFavorite?: boolean;
+  onAddFavorite?: (character: CharacterDetailTypeResponse) => void;
+  onRemoveFavorite?: (character: CharacterDetailTypeResponse) => void;
 }
