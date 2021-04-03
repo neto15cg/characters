@@ -12,7 +12,7 @@ const CardProduct = ({ character, className, testId, onClick }: CardCharacterPro
   return (
     <CardContainer className={className} data-testid={testId} onClick={handleClick}>
       {character?.image?.icon_url && (
-        <img alt={character?.name} src={character?.image?.thumb_url} width="150px" height="160px" />
+        <img alt={character?.name} src={character?.image?.thumb_url} width="150px" height="160px" loading="lazy" />
       )}
       <CardTitle>{character?.name}</CardTitle>
     </CardContainer>

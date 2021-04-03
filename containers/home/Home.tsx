@@ -1,5 +1,6 @@
+import { useRouter } from 'next/router';
 import React from 'react';
-import CardProduct from '../../components/cardCharacter/CardCharacter';
+import CardCharacter from '../../components/cardCharacter/CardCharacter';
 import InputDropDown from '../../components/inputDropDown/InputDropDown';
 import { InputDropDownOption } from '../../components/inputDropDown/InputDropDown.types';
 import Section from '../../components/section/Section';
@@ -8,12 +9,14 @@ import { MockResponse, OptionsFilter } from './Home.data';
 import { AmountCharacters, CharactersContainer, FilterContainer, InputContainer, SelectContainer } from './Home.styles';
 
 const Home = () => {
+  const router = useRouter();
+
   const handleClickOption = (option: InputDropDownOption) => {
     console.log(option);
   };
 
   const handleClickCard = character => {
-    console.log(character);
+    router.push(`/${character.id}`);
   };
   return (
     <Section>
@@ -51,7 +54,12 @@ const Home = () => {
       <AmountCharacters>1200 charcters</AmountCharacters>
       <CharactersContainer>
         {MockResponse.results.map(character => (
-          <CardProduct onClick={handleClickCard} className="card-character" key={character.id} character={character} />
+          <CardCharacter
+            onClick={handleClickCard}
+            className="card-character"
+            key={character.id}
+            character={character}
+          />
         ))}
       </CharactersContainer>
     </Section>

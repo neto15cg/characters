@@ -32,8 +32,8 @@ class CustomDocument extends Document {
   render() {
     return (
       <Html lang="pt">
+        <title>Characters</title>
         <Head>
-          <title>Challenge Login</title>
           <meta name="Description" content="Characters" />
           <meta name="robots" content="index, follow" />
           <link rel="canonical" href="#" />
@@ -45,7 +45,7 @@ class CustomDocument extends Document {
           />
           <link rel="icon" type="image/png" href="/favicon.png" />
         </Head>
-        <body style={{ margin: 0 }}>
+        <body>
           <Main />
           <NextScript />
         </body>

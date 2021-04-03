@@ -23,9 +23,19 @@ export const HeaderContent = styled.div`
   max-width: ${Dimensions.maxWidth};
 `;
 
-export const HeaderTitle = styled.h1`
-  margin: 0;
-  color: ${Behaviors.darkText};
-  font-family: ${Fonts.fontFamily};
-  font-weight: 700;
+export const HeaderTitle = styled.div`
+  a {
+    margin: 0;
+    color: ${Behaviors.darkText};
+    font-family: ${Fonts.fontFamily};
+    font-style: normal;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 47px;
+    text-decoration: none;
+
+    &:visited {
+      text-decoration: none;
+    }
+  }
 `;

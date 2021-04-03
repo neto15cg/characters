@@ -1,16 +1,16 @@
 import React from 'react';
+import Detail from '../containers/detail/Detail';
 import Header from '../containers/header/Header';
-import Home from '../containers/home/Home';
 
-const HomePage = () => {
+const DetailPage = () => {
   return (
     <>
       <main>
         <Header />
-        <Home />
+        <Detail />
       </main>
     </>
   );
 };
 
-export default HomePage;
+export default DetailPage;
