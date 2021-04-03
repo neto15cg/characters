@@ -1,7 +1,18 @@
+import React from 'react';
+import { PersistGate } from 'redux-persist/integration/react';
+import { useStore } from 'react-redux';
+import { wrapper } from '../store';
 import '../reset.css';
 
 function App({ Component, pageProps }: any) {
-  return <Component {...pageProps} />;
+  // @ts-ignore
+  const store: any = useStore(state => state);
+
+  return (
+    <PersistGate persistor={store.__persistor} loading={<div>Loading...</div>}>
+      <Component {...pageProps} />;
+    </PersistGate>
+  );
 }
 
-export default App;
+export default wrapper.withRedux(App);
