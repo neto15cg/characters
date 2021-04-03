@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { darken, lighten } from 'polished';
+import { Behaviors } from '../../utils/theme';
 
 export const StyledButton = styled.button`
   display: flex;
@@ -16,15 +17,23 @@ export const StyledButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   transition: background 250ms, background-color 250ms ease-in-out;
-  background-color: ${lighten(0.005, '#464646')};
-  font-family: 'Poppins', sans-serif;
+  background-color: ${lighten(0.005, Behaviors.darkElements)};
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    svg {
+      margin-right: 8px;
+    }
+  }
   &:hover {
-    background: ${darken(0.005, '#464646')} radial-gradient(circle, transparent 1%, ${darken(0.005, '#464646')} 1%) center/15000%;
+    background: ${darken(0.005, Behaviors.darkElements)}
+      radial-gradient(circle, transparent 1%, ${darken(0.005, Behaviors.darkElements)} 1%) center/15000%;
   }
 
   &:active {
-    background-color: ${lighten(0.05, '#464646')};
+    background-color: ${lighten(0.05, Behaviors.darkElements)};
     background-size: 100%;
     transition: background 0s;
   }

@@ -132,3 +132,8 @@ export const Description = styled.article`
     padding: 0 !important;
   }
 `;
+
+export const BackContainer = styled.div`
+  padding-left: 8px;
+  margin-bottom: 16px;
+`;

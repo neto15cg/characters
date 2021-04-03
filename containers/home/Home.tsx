@@ -2,22 +2,16 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import BasicLoading from '../../components/basicLoading/BasicLoading';
 import CardCharacter from '../../components/cardCharacter/CardCharacter';
+import { ErrorContainer, ErrorSubTitle, ErrorTitle, LoadingContainer } from '../../components/common/Common';
 import InputDropDown from '../../components/inputDropDown/InputDropDown';
 import { InputDropDownOption } from '../../components/inputDropDown/InputDropDown.types';
 import Section from '../../components/section/Section';
 import Select from '../../components/select/Select';
 import { OptionsFilter } from './Home.data';
-import {
-  AmountCharacters,
-  CharactersContainer,
-  FilterContainer,
-  InputContainer,
-  LoadingContainer,
-  SelectContainer,
-} from './Home.styles';
+import { AmountCharacters, CharactersContainer, FilterContainer, InputContainer, SelectContainer } from './Home.styles';
 import { HomeProps } from './Home.types';
 
-const Home = ({ characters, firstLoading }: HomeProps) => {
+const Home = ({ characters, firstLoading, error, onRefreshRequest }: HomeProps) => {
   const router = useRouter();
 
   const handleClickOption = (option: InputDropDownOption) => {
@@ -27,6 +21,23 @@ const Home = ({ characters, firstLoading }: HomeProps) => {
   const handleClickCard = character => {
     router.push(`/4005-${character.id}`);
   };
+
+  const handleReloadPage = () => {
+    if (onRefreshRequest) {
+      onRefreshRequest();
+    }
+  };
+
+  if (error) {
+    return (
+      <Section>
+        <ErrorContainer>
+          <ErrorTitle>Sorry, we have a problem!</ErrorTitle>
+          <ErrorSubTitle onClick={handleReloadPage}>Click here to refresh request :)</ErrorSubTitle>
+        </ErrorContainer>
+      </Section>
+    );
+  }
 
   if (firstLoading) {
     return (
@@ -71,7 +82,11 @@ const Home = ({ characters, firstLoading }: HomeProps) => {
           <Select name="filter" options={OptionsFilter} />
         </SelectContainer>
       </FilterContainer>
-      {characters && <AmountCharacters>{characters.results.length} characters</AmountCharacters>}
+      {characters && (
+        <AmountCharacters>
+          {characters.results.length} characters of {characters.number_of_total_results}
+        </AmountCharacters>
+      )}
       <CharactersContainer>
         {characters?.results?.map(character => (
           <CardCharacter

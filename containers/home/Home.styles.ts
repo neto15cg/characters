@@ -5,6 +5,10 @@ export const InputContainer = styled.div`
   max-width: 340px;
   width: 100%;
   padding: 0 8px;
+
+  ${device.mobile} {
+    max-width: 100%;
+  }
 `;
 
 export const AmountCharacters = styled.p`
@@ -43,12 +47,4 @@ export const SelectContainer = styled.div`
     width: 100%;
     max-width: 100%;
   }
-`;
-
-export const LoadingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  width: 100%;
 `;

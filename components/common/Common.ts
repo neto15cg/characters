@@ -29,3 +29,33 @@ export const StyledError = styled.span`
   padding-left: 12px;
   margin-top: 8px;
 `;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+`;
+
+export const ErrorTitle = styled.div`
+  color: ${Behaviors.darkText};
+  font-size: 18px;
+  margin-bottom: 16px;
+`;
+
+export const ErrorSubTitle = styled.div`
+  color: ${Behaviors.darkText};
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+`;

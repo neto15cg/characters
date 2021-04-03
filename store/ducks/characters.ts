@@ -38,7 +38,10 @@ export interface CharactersState {
   };
 
   loading: LoadingSection;
-  error: any;
+  error: {
+    characterDetail: any;
+    characters: any;
+  };
 }
 
 export const InitialState: CharactersState = {
@@ -88,12 +91,14 @@ export const charactersReducer: Reducer<CharactersState> = createReducer(Initial
   },
   [CharactersTypes.GetCharacterSuccess](state: CharactersState, action: Actions['GetCharacterSuccess']) {
     state.loading['loading.get'] = false;
+    state.error.characterDetail = undefined;
     state.data.characterDetail = action.payload;
     return state;
   },
   [CharactersTypes.GetCharacterFailure](state: CharactersState, action: Actions['GetCharacterFailure']) {
     state.loading['loading.get'] = false;
-    state.error = action.payload;
+    state.error.characterDetail = action.payload;
+    return state;
   },
   [CharactersTypes.ChangePageList](state: CharactersState, action: Actions['ChangePageList']) {
     state.data.currentPage = action.payload;
