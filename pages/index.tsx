@@ -6,19 +6,21 @@ import { listCharacters } from '../store/ducks/characters';
 import { RootState } from '../store/ducks/state';
 
 const HomePage = () => {
-  const characters = useSelector((state: RootState) => state.characters.data.characters);
   const dispatch = useDispatch();
+  const { characters } = useSelector((state: RootState) => state.characters.data);
 
   console.log('---', characters);
   useEffect(() => {
-    dispatch(listCharacters());
+    if (!characters) {
+      dispatch(listCharacters());
+    }
   }, [dispatch]);
 
   return (
     <>
       <main>
         <Header />
-        <Home />
+        <Home characters={characters} />
       </main>
     </>
   );

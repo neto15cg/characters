@@ -3,32 +3,35 @@ import { ThunkAction } from 'redux-thunk';
 import api from '../../services/api';
 import createReducer from '../../utils/reducer';
 import { RootState } from './state';
+import { CharacterDetailTypeResponse, CharactersResponse } from './types';
 
 export enum CharactersTypes {
   ListCharactersStart = '@Characters/ListCharactersStart',
   ListCharactersSuccess = '@Characters/ListCharactersSuccess',
   ListCharactersFailure = '@Characters/ListCharactersFailure',
+  GetCharacterStart = '@Characters/GetCharacterStart',
+  GetCharacterSuccess = '@Characters/GetCharacterSuccess',
+  GetCharacterFailure = '@Characters/GetCharacterFailure',
 }
 
 export type Actions = {
   ListCharactersStart: { type: CharactersTypes.ListCharactersStart };
-  ListCharactersSuccess: {
-    type: CharactersTypes.ListCharactersSuccess;
-    payload: any;
-  };
-  ListCharactersFailure: {
-    type: CharactersTypes.ListCharactersFailure;
-    payload: any;
-  };
+  ListCharactersSuccess: { type: CharactersTypes.ListCharactersSuccess; payload: CharactersResponse };
+  ListCharactersFailure: { type: CharactersTypes.ListCharactersFailure; payload: any };
+  GetCharacterStart: { type: CharactersTypes.GetCharacterStart };
+  GetCharacterSuccess: { type: CharactersTypes.GetCharacterSuccess; payload: CharacterDetailTypeResponse };
+  GetCharacterFailure: { type: CharactersTypes.GetCharacterFailure; payload: any };
 };
 
 export interface LoadingSection {
   'loading.list': boolean;
+  'loading.get': boolean;
 }
 
 export interface CharactersState {
   data: {
-    characters: any[];
+    characters?: CharactersResponse;
+    characterDetail?: CharacterDetailTypeResponse;
   };
 
   loading: LoadingSection;
@@ -37,10 +40,12 @@ export interface CharactersState {
 
 export const InitialState: CharactersState = {
   data: {
-    characters: [],
+    characters: undefined,
+    characterDetail: undefined,
   },
   loading: {
     'loading.list': false,
+    'loading.get': false,
   },
   error: undefined,
 };
@@ -48,7 +53,7 @@ export const InitialState: CharactersState = {
 export const charactersReducer: Reducer<CharactersState> = createReducer(InitialState, {
   [CharactersTypes.ListCharactersStart](state: CharactersState) {
     state.loading['loading.list'] = true;
-    state.data.characters = [];
+    state.data.characters = undefined;
     return state;
   },
   [CharactersTypes.ListCharactersSuccess](state: CharactersState, action: Actions['ListCharactersSuccess']) {
@@ -61,29 +66,53 @@ export const charactersReducer: Reducer<CharactersState> = createReducer(Initial
     state.error = action.payload;
     return state;
   },
+  [CharactersTypes.GetCharacterStart](state: CharactersState) {
+    state.loading['loading.get'] = true;
+    return state;
+  },
+  [CharactersTypes.GetCharacterSuccess](state: CharactersState, action: Actions['GetCharacterSuccess']) {
+    state.loading['loading.get'] = false;
+    state.data.characterDetail = action.payload;
+    return state;
+  },
+  [CharactersTypes.GetCharacterFailure](state: CharactersState, action: Actions['GetCharacterFailure']) {
+    state.loading['loading.get'] = false;
+    state.error = action.payload;
+  },
 });
 
-export function listCharacters(): ThunkAction<Promise<any>, RootState, any, any> {
+export function listCharacters(offset: number = 0, limit: number = 24): ThunkAction<Promise<any>, RootState, any, any> {
   return async (dispatch): Promise<any> => {
-    dispatch({
-      type: CharactersTypes.ListCharactersStart,
-    });
-    const url = 'characters/?api_key=79fb5af70ddd357a6dfd87aec0af52a814deee1f&format=json&limit=100&offset=100';
+    dispatch({ type: CharactersTypes.ListCharactersStart });
+    const url = `characters/?api_key=79fb5af70ddd357a6dfd87aec0af52a814deee1f&format=json&limit=${limit}&offset=${offset}`;
     return new Promise((resolve, reject) => {
       api
         .get(url)
-        .then((response: any) => {
-          dispatch({
-            type: CharactersTypes.ListCharactersSuccess,
-            payload: response.data,
-          });
+        .then(response => {
+          dispatch({ type: CharactersTypes.ListCharactersSuccess, payload: response.data });
           resolve(response);
         })
-        .catch((err: any) => {
-          dispatch({
-            type: CharactersTypes.ListCharactersFailure,
-            payload: err?.response?.data,
-          });
+        .catch(err => {
+          dispatch({ type: CharactersTypes.ListCharactersFailure, payload: err?.response?.data });
+          reject();
+        });
+    });
+  };
+}
+
+export function getCharacter(characterId: string): ThunkAction<Promise<any>, RootState, any, any> {
+  return async (dispatch): Promise<any> => {
+    dispatch({ type: CharactersTypes.GetCharacterStart });
+    const url = `character/${characterId}/?api_key=79fb5af70ddd357a6dfd87aec0af52a814deee1f&format=json`;
+    return new Promise((resolve, reject) => {
+      api
+        .get(url)
+        .then(response => {
+          dispatch({ type: CharactersTypes.GetCharacterSuccess, payload: response.data });
+          resolve(response);
+        })
+        .catch(err => {
+          dispatch({ type: CharactersTypes.GetCharacterFailure, payload: err?.response?.data });
           reject();
         });
     });

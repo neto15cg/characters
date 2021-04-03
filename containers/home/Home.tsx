@@ -5,10 +5,11 @@ import InputDropDown from '../../components/inputDropDown/InputDropDown';
 import { InputDropDownOption } from '../../components/inputDropDown/InputDropDown.types';
 import Section from '../../components/section/Section';
 import Select from '../../components/select/Select';
-import { MockResponse, OptionsFilter } from './Home.data';
+import { OptionsFilter } from './Home.data';
 import { AmountCharacters, CharactersContainer, FilterContainer, InputContainer, SelectContainer } from './Home.styles';
+import { HomeProps } from './Home.types';
 
-const Home = () => {
+const Home = ({ characters }: HomeProps) => {
   const router = useRouter();
 
   const handleClickOption = (option: InputDropDownOption) => {
@@ -16,8 +17,9 @@ const Home = () => {
   };
 
   const handleClickCard = character => {
-    router.push(`/${character.id}`);
+    router.push(`/4005-${character.id}`);
   };
+
   return (
     <Section>
       <FilterContainer>
@@ -51,9 +53,9 @@ const Home = () => {
           <Select name="filter" options={OptionsFilter} />
         </SelectContainer>
       </FilterContainer>
-      <AmountCharacters>1200 charcters</AmountCharacters>
+      {characters && <AmountCharacters>{characters.results.length} characters</AmountCharacters>}
       <CharactersContainer>
-        {MockResponse.results.map(character => (
+        {characters?.results?.map(character => (
           <CardCharacter
             onClick={handleClickCard}
             className="card-character"

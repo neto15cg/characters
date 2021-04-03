@@ -23,7 +23,7 @@ const makeStore = ({ isServer }): any => {
 
     const persistConfig = {
       key: 'characters',
-      whitelist: ['darkmod', 'countries'], // only counter will be persisted, add other reducers if needed
+      whitelist: [], // only counter will be persisted, add other reducers if needed
       storage, // if needed, use a safer storage
     };
 
