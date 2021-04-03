@@ -12,6 +12,7 @@ export enum CharactersTypes {
   GetCharacterStart = '@Characters/GetCharacterStart',
   GetCharacterSuccess = '@Characters/GetCharacterSuccess',
   GetCharacterFailure = '@Characters/GetCharacterFailure',
+  ChangePageList = '@Characters/PagePageList',
 }
 
 export type Actions = {
@@ -21,6 +22,7 @@ export type Actions = {
   GetCharacterStart: { type: CharactersTypes.GetCharacterStart };
   GetCharacterSuccess: { type: CharactersTypes.GetCharacterSuccess; payload: CharacterDetailTypeResponse };
   GetCharacterFailure: { type: CharactersTypes.GetCharacterFailure; payload: any };
+  ChangePageList: { type: CharactersTypes.ChangePageList; payload: number };
 };
 
 export interface LoadingSection {
@@ -32,6 +34,7 @@ export interface CharactersState {
   data: {
     characters?: CharactersResponse;
     characterDetail?: CharacterDetailTypeResponse;
+    currentPage: number;
   };
 
   loading: LoadingSection;
@@ -42,31 +45,44 @@ export const InitialState: CharactersState = {
   data: {
     characters: undefined,
     characterDetail: undefined,
+    currentPage: 1,
   },
   loading: {
     'loading.list': false,
     'loading.get': false,
   },
-  error: undefined,
+  error: {
+    characters: undefined,
+    characterDetail: undefined,
+  },
 };
 
 export const charactersReducer: Reducer<CharactersState> = createReducer(InitialState, {
   [CharactersTypes.ListCharactersStart](state: CharactersState) {
+    state.error.characters = undefined;
     state.loading['loading.list'] = true;
-    state.data.characters = undefined;
     return state;
   },
   [CharactersTypes.ListCharactersSuccess](state: CharactersState, action: Actions['ListCharactersSuccess']) {
     state.loading['loading.list'] = false;
-    state.data.characters = action.payload;
+    if (!state.data.characters) {
+      state.data.characters = action.payload;
+      return state;
+    }
+    const newCharacters: CharactersResponse = {
+      ...state.data.characters,
+      results: [...state.data.characters.results, ...action.payload.results],
+    };
+    state.data.characters = newCharacters;
     return state;
   },
   [CharactersTypes.ListCharactersFailure](state: CharactersState, action: Actions['ListCharactersFailure']) {
     state.loading['loading.list'] = false;
-    state.error = action.payload;
+    state.error.characters = action.payload;
     return state;
   },
   [CharactersTypes.GetCharacterStart](state: CharactersState) {
+    state.data.characterDetail = undefined;
     state.loading['loading.get'] = true;
     return state;
   },
@@ -79,10 +95,15 @@ export const charactersReducer: Reducer<CharactersState> = createReducer(Initial
     state.loading['loading.get'] = false;
     state.error = action.payload;
   },
+  [CharactersTypes.ChangePageList](state: CharactersState, action: Actions['ChangePageList']) {
+    state.data.currentPage = action.payload;
+    return state;
+  },
 });
 
-export function listCharacters(offset: number = 0, limit: number = 24): ThunkAction<Promise<any>, RootState, any, any> {
+export function listCharacters(page = 1, limit: number = 40): ThunkAction<Promise<any>, RootState, any, any> {
   return async (dispatch): Promise<any> => {
+    const offset = page * limit - limit;
     dispatch({ type: CharactersTypes.ListCharactersStart });
     const url = `characters/?api_key=79fb5af70ddd357a6dfd87aec0af52a814deee1f&format=json&limit=${limit}&offset=${offset}`;
     return new Promise((resolve, reject) => {
@@ -90,10 +111,11 @@ export function listCharacters(offset: number = 0, limit: number = 24): ThunkAct
         .get(url)
         .then(response => {
           dispatch({ type: CharactersTypes.ListCharactersSuccess, payload: response.data });
+          dispatch({ type: CharactersTypes.ChangePageList, payload: page });
           resolve(response);
         })
-        .catch(err => {
-          dispatch({ type: CharactersTypes.ListCharactersFailure, payload: err?.response?.data });
+        .catch(() => {
+          dispatch({ type: CharactersTypes.ListCharactersFailure, payload: true });
           reject();
         });
     });

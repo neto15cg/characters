@@ -10,6 +10,7 @@ const DetailPage = () => {
   const { pid } = router.query;
   const dispatch = useDispatch();
   const { characterDetail } = useSelector((state: RootState) => state.characters.data);
+
   useEffect(() => {
     const pid: any = router?.query?.pid;
     if (pid) {
@@ -17,7 +18,6 @@ const DetailPage = () => {
     }
   }, [pid]);
 
-  console.log('---------->', pid);
   return (
     <>
       <main>

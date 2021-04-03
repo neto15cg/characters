@@ -14,29 +14,26 @@ const bindMiddleware = middleware => {
 
 const makeStore = ({ isServer }): any => {
   if (isServer) {
-    //If it's on server side, create a store
     return createStore(rootReducer, bindMiddleware([thunkMiddleware, logger]));
   } else {
-    //If it's on client side, create a store which will persist
     const { persistStore, persistReducer } = require('redux-persist');
     const storage = require('redux-persist/lib/storage').default;
 
     const persistConfig = {
       key: 'characters',
-      whitelist: [], // only counter will be persisted, add other reducers if needed
-      storage, // if needed, use a safer storage
+      whitelist: [],
+      storage,
     };
 
-    const persistedReducer = persistReducer(persistConfig, rootReducer); // Create a new reducer with our existing reducer
+    const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-    const store: any = createStore(persistedReducer, {}, bindMiddleware([thunkMiddleware, logger])); // Creating the store again
+    const store: any = createStore(persistedReducer, {}, bindMiddleware([thunkMiddleware, logger]));
 
-    store.__persistor = persistStore(store); // This creates a persistor object & push that persisted object to .__persistor, so that we can avail the persistability feature
+    store.__persistor = persistStore(store);
 
     return store;
   }
 };
 
-// Export the wrapper & wrap the pages/_app.js with this wrapper only
 // @ts-ignore
 export const wrapper = createWrapper(makeStore);
