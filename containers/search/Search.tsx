@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import InputDropDown from '../../components/inputDropDown/InputDropDown';
-import api from '../../services/api';
+import Axios from 'axios';
 import { CharactersResponse } from '../../store/ducks/types';
 import useDebounce from '../../utils/useDebounce';
 import { InputContainer } from './Search.styles';
 import { SearchProps } from './Search.types';
+import { baseURL } from '../../services/api';
 
 const Search = ({ onClickResults, onClear, loading, onClickOption }: SearchProps) => {
   const [predictions, setPredictions] = useState<CharactersResponse>(undefined);
@@ -13,21 +14,23 @@ const Search = ({ onClickResults, onClear, loading, onClickOption }: SearchProps
   const [focused, setFocused] = useState(false);
 
   const handleClearOptions = () => {
+    if (onClear) {
+      onClear();
+    }
     setPredictions(undefined);
     setSearchQuery('');
-    onClear();
     setFocused(false);
   };
 
-  const handleClickOption = option => onClickOption(option);
+  const handleClickOption = option => onClickOption && onClickOption(option);
 
   const handleGetPredictions = async (search: string) => {
     try {
-      const url = `characters?limit=${3}&offset=${0}&search=${search}`;
-      const response = await api.get(url);
+      const url = `${baseURL}characters?limit=${3}&offset=${0}&search=${search}`;
+      const response = await Axios.get(url);
       setPredictions(response.data);
       setSearchQuery(search);
-    } catch (e) {}
+    } catch {}
   };
 
   /**
@@ -51,7 +54,9 @@ const Search = ({ onClickResults, onClear, loading, onClickOption }: SearchProps
   };
 
   const handleSeeResults = () => {
-    onClickResults(searchQuery);
+    if (onClickResults) {
+      onClickResults(searchQuery);
+    }
     setFocused(false);
   };
 
@@ -79,6 +84,7 @@ const Search = ({ onClickResults, onClear, loading, onClickOption }: SearchProps
         }))}
         onClickAllResult={handleSeeResults}
         onClickOption={handleClickOption}
+        testId="input-search"
       />
     </InputContainer>
   );

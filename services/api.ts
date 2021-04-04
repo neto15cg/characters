@@ -6,8 +6,8 @@ import axios from 'axios';
  * I needed to create a proxy api, because was block requests by cors
  */
 
-const api = axios.create({
-  baseURL: 'https://proxy-api-challenge.herokuapp.com/',
-});
+export const baseURL = 'https://proxy-api-challenge.herokuapp.com/';
+
+const api = axios.create({});
 
 export default api;

@@ -49,8 +49,7 @@ export const favoriteCharactersReducer: Reducer<FavoriteCharactersState> = creat
 });
 
 export function addFavoriteCharacter(character: CharacterDetailTypeResponse) {
-  return (dispatch, getState) => {
-    console.log('------------------------x', getState().characters);
+  return dispatch => {
     dispatch({ type: FavoriteTypes.AddFavoriteCharacters, payload: character });
   };
 }

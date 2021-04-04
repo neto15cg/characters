@@ -1,6 +1,7 @@
 import { Reducer } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import api from '../../services/api';
+import Axios from 'axios';
+import { baseURL } from '../../services/api';
 import createReducer from '../../utils/reducer';
 import { RootState } from './state';
 import { CharacterDetailTypeResponse, CharactersResponse } from './types';
@@ -115,10 +116,9 @@ export function listCharacters(
     const offset = page * limit - limit;
     dispatch({ type: CharactersTypes.ListCharactersStart });
 
-    const url = `characters?limit=${limit}&offset=${offset}${search ? `&search=${search}` : ''}`;
+    const url = `${baseURL}characters?limit=${limit}&offset=${offset}${search ? `&search=${search}` : ''}`;
     return new Promise((resolve, reject) => {
-      api
-        .get(url)
+      Axios.get(url)
         .then(response => {
           dispatch({ type: CharactersTypes.ListCharactersSuccess, payload: response.data });
           dispatch({ type: CharactersTypes.ChangePageList, payload: page });
@@ -135,10 +135,9 @@ export function listCharacters(
 export function getCharacter(characterId: string): ThunkAction<Promise<any>, RootState, any, any> {
   return async (dispatch): Promise<any> => {
     dispatch({ type: CharactersTypes.GetCharacterStart });
-    const url = `character?id=${characterId}`;
+    const url = `${baseURL}character?id=${characterId}`;
     return new Promise((resolve, reject) => {
-      api
-        .get(url)
+      Axios.get(url)
         .then(response => {
           dispatch({ type: CharactersTypes.GetCharacterSuccess, payload: response.data });
           resolve(response);
