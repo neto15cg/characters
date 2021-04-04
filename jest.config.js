@@ -12,6 +12,8 @@ module.exports = {
       diagnostics: false,
     },
   },
+  collectCoverage: true,
+  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   setupFilesAfterEnv: ['./jest.setup.ts'],
   moduleNameMapper: {
     '\\.(css|scss)$': '<rootDir>/__mocks__/styleMock.js',

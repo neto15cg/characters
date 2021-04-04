@@ -2,24 +2,24 @@ import '@testing-library/jest-dom';
 
 require('jest-fetch-mock').enableMocks();
 
-const react = document.createElement('div');
-react.id = 'react';
-react.style.height = '100vh';
-document.body.appendChild(react);
+jest.mock('axios');
 
-(window as any).skipEventLoop = () => new Promise(resolve => setImmediate(resolve));
+declare let process: { on: (a: string, b: any) => void };
 
-(window as any).requestAnimationFrame = (callback: () => void) => {
-  setTimeout(callback, 0);
-};
-
-(window as any).matchMedia = () => ({
-  addListener: () => undefined,
-  matches: false,
-  removeListener: () => undefined,
+afterEach(() => {
+  jest.clearAllMocks();
 });
 
-// eslint-disable-next-line
+jest.setTimeout(50000);
+
+process.on('unhandledRejection', (e: any) => {
+  // eslint-disable-next-line no-console
+  console.error('**** Unhandled rejection in promise: ');
+  // eslint-disable-next-line no-console
+  console.error(e);
+});
+
+const consoleError = console.error;
 console.error = jest.fn((...args) => {
   const [error] = args;
   const skipMessages = [
@@ -34,6 +34,6 @@ console.error = jest.fn((...args) => {
   ];
 
   if (!skipMessages.some(d => error.toString().includes(d))) {
-    // consoleError(...(args as any));
+    // consoleError(...args);
   }
 });

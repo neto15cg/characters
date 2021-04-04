@@ -38,6 +38,7 @@ const InputDropDown = (props: InputProps, ref) => {
     onBlur,
     isOpenDropDown,
     onClickOutside,
+    value,
   } = props;
 
   const dropDrownRef = useRef(null);
@@ -83,6 +84,7 @@ const InputDropDown = (props: InputProps, ref) => {
           placeholder={placeholder}
           onFocus={onFocus}
           onBlur={onBlur}
+          value={value}
         />
         {loading && (
           <InputLoadingContainer>

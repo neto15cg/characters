@@ -24,13 +24,31 @@ describe('Input', () => {
   });
 
   it('Should have label passed in props', () => {
-    render(<InputDropDown value="input value" name="inputTest" type="text" label="Test label" testId="input" id="inputTestlabel" />);
+    render(
+      <InputDropDown
+        value="input value"
+        name="inputTest"
+        type="text"
+        label="Test label"
+        testId="input"
+        id="inputTestlabel"
+      />,
+    );
 
     expect(screen.getByText(/Test label/i)).toBeInTheDocument();
   });
 
   it('Should render error text', () => {
-    render(<InputDropDown error="Input error" value="input value" type="text" name="inputTest" label="Test label" testId="input" />);
+    render(
+      <InputDropDown
+        error="Input error"
+        value="input value"
+        type="text"
+        name="inputTest"
+        label="Test label"
+        testId="input"
+      />,
+    );
 
     expect(screen.getByText(/Input error/i));
   });
@@ -66,6 +84,7 @@ describe('Input', () => {
           { label: 'Label 1', value: 'value 1' },
           { label: 'Label 2', value: 'value 2' },
         ]}
+        isOpenDropDown
       />,
     );
 
@@ -85,6 +104,7 @@ describe('Input', () => {
           { label: 'Label 2', value: 'value 2' },
         ]}
         onClickOption={spyOption}
+        isOpenDropDown
       />,
     );
 

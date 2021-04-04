@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import BasicLoading from '../../components/basicLoading/BasicLoading';
 import CardCharacter from '../../components/cardCharacter/CardCharacter';
 import { ErrorContainer, ErrorSubTitle, ErrorTitle, LoadingContainer } from '../../components/common/Common';
-import InputDropDown from '../../components/inputDropDown/InputDropDown';
-import { InputDropDownOption } from '../../components/inputDropDown/InputDropDown.types';
 import Section from '../../components/section/Section';
 import Select from '../../components/select/Select';
 import { OptionsFilter } from './Home.data';
