@@ -5,7 +5,6 @@ import Header from '../containers/header/Header';
 import Home from '../containers/home/Home';
 import { listCharacters } from '../store/ducks/characters';
 import { RootState } from '../store/ducks/state';
-import { CharacterType } from '../store/ducks/types';
 
 const HomePage = () => {
   const dispatch = useDispatch();
