@@ -7,7 +7,7 @@ export const StyledLabel = styled.label`
   font-style: normal;
   font-weight: normal;
   font-family: ${Fonts.fontFamily};
-  font-size: 10px;
+  font-size: 16px;
   color: ${Behaviors.darkText};
   padding-left: 12px;
   margin-bottom: 8px;

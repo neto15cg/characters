@@ -177,3 +177,12 @@ export interface FavoriteCharacterType {
   name: string;
   image: Image;
 }
+
+export interface EditedCharactersType {
+  id: number;
+  name: string;
+  real_name: string;
+  aliases: string;
+  birth: string;
+  gender: number;
+}

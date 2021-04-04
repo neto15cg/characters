@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import BasicLoading from '../../components/basicLoading/BasicLoading';
 import CardCharacter from '../../components/cardCharacter/CardCharacter';
@@ -26,6 +26,7 @@ const Home = ({
   loadingMore,
   currentPage,
   onMore,
+  editedCharacters,
 }: HomeProps) => {
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -64,28 +65,37 @@ const Home = ({
     }
   };
 
-  const listOfCharacters: any = filter === 'favorites' ? { results: favoriteCharacters } : characters;
-  const numberOfPage =
-    (listOfCharacters &&
-      listOfCharacters.number_of_total_results &&
-      Math.round(listOfCharacters.number_of_total_results / listOfCharacters.limit)) ||
-    1;
-
   const ListCharacters = () => {
+    const listOfCharacters: any = filter === 'favorites' ? { results: favoriteCharacters } : characters;
+    const numberOfPage =
+      (listOfCharacters &&
+        listOfCharacters.number_of_total_results &&
+        Math.round(listOfCharacters.number_of_total_results / listOfCharacters.limit)) ||
+      1;
+
+    const mergedResults = listOfCharacters?.results.map(character => {
+      const findEdited = editedCharacters.find(editedCharacter => editedCharacter.id === character.id);
+      if (!findEdited) {
+        return character;
+      }
+      return { ...character, ...findEdited };
+    });
+
+    const listToRender = { ...listOfCharacters, results: mergedResults || [] };
     return (
       <>
-        {listOfCharacters?.results.length === 0 ? (
+        {listToRender?.results.length === 0 ? (
           <EmptyStateContainer>We do not found characters by filter</EmptyStateContainer>
         ) : (
           <>
-            {listOfCharacters?.results.length > 0 && (
+            {listToRender?.results.length > 0 && (
               <AmountCharacters>
-                {listOfCharacters?.results.length} characters of{' '}
-                {listOfCharacters?.number_of_total_results || listOfCharacters.results.length}
+                {listToRender?.results.length} characters of{' '}
+                {listToRender?.number_of_total_results || listToRender.results.length}
               </AmountCharacters>
             )}
             <CharactersContainer>
-              {listOfCharacters?.results?.map(character => (
+              {listToRender?.results?.map(character => (
                 <CardCharacter
                   onClick={handleClickCard}
                   className="card-character"
@@ -94,7 +104,7 @@ const Home = ({
                 />
               ))}
             </CharactersContainer>
-            {listOfCharacters && numberOfPage > currentPage && (
+            {listToRender && numberOfPage > currentPage && (
               <LoadMore isFetching={loadingMore} page={currentPage} callback={handleMoreCharacters} />
             )}
           </>
@@ -127,7 +137,7 @@ const Home = ({
         </SelectContainer>
       </FilterContainer>
       {!firstLoading ? (
-        <ListCharacters />
+        <>{ListCharacters()}</>
       ) : (
         <LoadingContainer>
           <BasicLoading size={48} />

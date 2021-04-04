@@ -39,6 +39,8 @@ const InputDropDown = (props: InputProps, ref) => {
     isOpenDropDown,
     onClickOutside,
     value,
+    name,
+    readOnly,
   } = props;
 
   const dropDrownRef = useRef(null);
@@ -79,12 +81,15 @@ const InputDropDown = (props: InputProps, ref) => {
           ref={ref}
           data-testid={testId}
           type={type ?? 'text'}
-          disabled={disabled}
+          disabled={disabled || readOnly}
           error={error}
           placeholder={placeholder}
           onFocus={onFocus}
           onBlur={onBlur}
           value={value}
+          name={name}
+          leftIcon={!!leftIcon}
+          readOnly={readOnly}
         />
         {loading && (
           <InputLoadingContainer>

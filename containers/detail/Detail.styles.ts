@@ -3,8 +3,8 @@ import { Behaviors, device, Fonts } from '../../utils/theme';
 
 export const HighLight = styled.div`
   display: flex;
-  padding: 8px;
   margin-bottom: 32px;
+  width: 100%;
 
   ${device.mobile} {
     display: flex;
@@ -14,19 +14,29 @@ export const HighLight = styled.div`
   }
 `;
 
-export const HighLightImg = styled.img`
-  width: 70%;
-
+export const HighLightImgContainer = styled.div`
+  width: 100%;
   ${device.mobile} {
     margin-bottom: 32px;
-    width: 100%;
+    width: 90%;
   }
+`;
+
+export const HighLightImg = styled.img`
+  width: 100%;
+  padding: 8px;
 `;
 
 export const InformationsContainer = styled.div`
   margin-left: 32px;
+  width: 100%;
+  padding: 8px;
   ${device.mobile} {
     margin-left: 0;
+  }
+
+  form {
+    width: 100%;
   }
 `;
 
@@ -131,11 +141,25 @@ export const Description = styled.article`
     color: ${Behaviors.darkText};
     padding: 0 !important;
   }
+
+  ${device.mobile} {
+    table {
+      display: none;
+    }
+  }
 `;
 
 export const BackContainer = styled.div`
   padding-left: 8px;
   margin-bottom: 16px;
+`;
+
+export const ButtonsContainer = styled.div`
+  margin-bottom: 32px;
+  width: 100%;
+  button:not(:last-child) {
+    margin-right: 16px;
+  }
 `;
 
 export const StyledFabButton = styled.button`
@@ -144,4 +168,17 @@ export const StyledFabButton = styled.button`
   outline: 0;
   padding: 0;
   cursor: pointer;
+`;
+
+export const ButtonsFormContainer = styled.div`
+  display: flex;
+
+  margin-top: 32px;
+  button {
+    height: 60px;
+  }
+
+  button:first-child {
+    margin-right: 32px;
+  }
 `;

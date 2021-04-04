@@ -68,7 +68,6 @@ const Search = ({ onClickResults, onClear, loading }: SearchProps) => {
         loading={loading || loadingSearch}
         disabled={loading || loadingSearch}
         onFocus={handleFocus}
-        value={searchQuery}
         onClickOutside={onClickOutside}
         isOpenDropDown={focused}
         options={predictions?.results.map(character => ({

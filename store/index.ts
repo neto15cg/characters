@@ -21,7 +21,7 @@ const makeStore = ({ isServer }): any => {
 
     const persistConfig = {
       key: 'characters',
-      whitelist: ['favoriteCharacters'],
+      whitelist: ['favoriteCharacters', 'editedCharacters'],
       storage,
     };
 

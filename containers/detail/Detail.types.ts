@@ -1,4 +1,4 @@
-import { CharacterDetailTypeResponse } from '../../store/ducks/types';
+import { CharacterDetailType, CharacterDetailTypeResponse } from '../../store/ducks/types';
 
 export interface DetailProps {
   character: CharacterDetailTypeResponse;
@@ -9,4 +9,5 @@ export interface DetailProps {
   isFavorite?: boolean;
   onAddFavorite?: (character: CharacterDetailTypeResponse) => void;
   onRemoveFavorite?: (character: CharacterDetailTypeResponse) => void;
+  onSaveEdit?: (character: CharacterDetailType) => void;
 }

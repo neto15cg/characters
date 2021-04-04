@@ -51,4 +51,5 @@ export interface InputProps {
   disabled?: boolean;
   isOpenDropDown?: boolean;
   onClickOutside?: () => void;
+  readOnly?: boolean;
 }

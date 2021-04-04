@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { darken, lighten } from 'polished';
 import { Behaviors } from '../../utils/theme';
 
@@ -17,7 +17,8 @@ export const StyledButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   transition: background 250ms, background-color 250ms ease-in-out;
-  background-color: ${lighten(0.005, Behaviors.darkElements)};
+  background-color: ${props => lighten(0.005, props.color || Behaviors.darkElements)};
+
   span {
     display: flex;
     align-items: center;
@@ -28,8 +29,10 @@ export const StyledButton = styled.button`
     }
   }
   &:hover {
-    background: ${darken(0.005, Behaviors.darkElements)}
-      radial-gradient(circle, transparent 1%, ${darken(0.005, Behaviors.darkElements)} 1%) center/15000%;
+    background: ${props => css`
+      ${darken(0.005, props.color || Behaviors.darkElements)}
+      radial-gradient(circle, transparent 1%, ${darken(0.005, props.color || Behaviors.darkElements)} 1%) center/15000%
+    `};
   }
 
   &:active {

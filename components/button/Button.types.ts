@@ -6,4 +6,5 @@ export interface ButtonProps {
   loading?: boolean;
   className?: string;
   testId?: string;
+  color?: string;
 }

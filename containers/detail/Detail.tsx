@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import BasicLoading from '../../components/basicLoading/BasicLoading';
 import Button from '../../components/button/Button';
 import { ErrorContainer, ErrorSubTitle, ErrorTitle, LoadingContainer } from '../../components/common/Common';
+import InputDropDown from '../../components/inputDropDown/InputDropDown';
 import Section from '../../components/section/Section';
+import Select from '../../components/select/Select';
 import SvgIcon from '../../components/svgIcon/SvgIcon';
 import { CharacterDetailTypeResponse } from '../../store/ducks/types';
+import { OptionsFilter, renderGender } from './Detail.data';
 import {
   BackContainer,
+  ButtonsContainer,
+  ButtonsFormContainer,
   Description,
   HighLight,
   HighLightImg,
+  HighLightImgContainer,
   Information,
   InformationsContainer,
   Name,
@@ -26,8 +33,18 @@ const Detail = ({
   onAddFavorite,
   onRemoveFavorite,
   isFavorite,
+  onSaveEdit,
 }: DetailProps) => {
   const character = characterResponse?.results;
+  const [isEditing, setIsEditing] = useState(false);
+
+  const { register, handleSubmit, reset } = useForm();
+
+  const onSubmit = data => {
+    const updateCharacter = { ...character, ...data, gender: Number(data.gender) };
+    onSaveEdit(updateCharacter);
+    setIsEditing(false);
+  };
 
   const handleGoBack = () => {
     if (onGoBack) {
@@ -50,6 +67,22 @@ const Detail = ({
       return onRemoveFavorite(character);
     }
   };
+
+  const handleEdit = () => setIsEditing(true);
+
+  const handleCancelEdit = () => setIsEditing(false);
+
+  useEffect(() => {
+    if (character) {
+      reset({
+        name: character.name || '',
+        aliases: character.aliases || '',
+        gender: character.gender || 0,
+        real_name: character.real_name || '',
+        birth: character.birth || '',
+      });
+    }
+  }, [character]);
 
   if (error) {
     return (
@@ -81,25 +114,58 @@ const Detail = ({
         </Button>
       </BackContainer>
       <HighLight>
-        <HighLightImg src={character?.image.medium_url} />
+        <HighLightImgContainer>
+          <HighLightImg src={character?.image.medium_url} />
+        </HighLightImgContainer>
         <InformationsContainer>
-          {!!character?.name && <Name>{character.name}</Name>}
-          {!!character?.gender && <Information>Gender: {character.gender === 1 ? 'Male' : 'Female'}</Information>}
-          {!!character?.real_name && <Information>Real name: {character.real_name}</Information>}
-          {!!character?.aliases && (
-            <Information>
-              Aliases:&nbsp; <div dangerouslySetInnerHTML={{ __html: character.aliases }} />
-            </Information>
+          <ButtonsContainer>
+            <StyledFabButton onClick={handleFavorite}>
+              <SvgIcon
+                src={'/assets/icons/heart.svg'}
+                width="32px"
+                height="32px"
+                fill={isFavorite ? '#FE1111' : '#c3c3c3'}
+              />
+            </StyledFabButton>
+            {!isEditing && (
+              <StyledFabButton onClick={handleEdit}>
+                <SvgIcon src={'/assets/icons/edit.svg'} width="32px" height="32px" fill={'#6563ff'} />
+              </StyledFabButton>
+            )}
+          </ButtonsContainer>
+
+          {isEditing ? (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <InputDropDown type="text" name="name" label="Name" ref={register} />
+              <br />
+              <Select name="gender" label="Aliases" options={OptionsFilter} ref={register} />
+              <br />
+              <InputDropDown type="text" name="real_name" label="Real name" ref={register} />
+              <br />
+              <InputDropDown type="text" name="aliases" label="Aliases" ref={register} />
+              <br />
+              <InputDropDown type="text" name="birth" label="Birth" ref={register} />
+              <br />
+              <ButtonsFormContainer>
+                <Button type="submit">Save</Button>
+                <Button type="submit" color="#FE1111" onClick={handleCancelEdit}>
+                  Cancel
+                </Button>
+              </ButtonsFormContainer>
+            </form>
+          ) : (
+            <>
+              {!!character?.name && <Name>{character.name}</Name>}
+              {character?.gender > -1 && <Information>Gender: {renderGender(character.gender)}</Information>}
+              {!!character?.real_name && <Information>Real name: {character.real_name}</Information>}
+              {!!character?.aliases && (
+                <Information>
+                  Aliases:&nbsp; <div dangerouslySetInnerHTML={{ __html: character.aliases }} />
+                </Information>
+              )}
+              {!!character?.birth && <Information>Birth: {character.birth}</Information>}
+            </>
           )}
-          {!!character?.birth && <Information>{character.birth}</Information>}
-          <StyledFabButton onClick={handleFavorite}>
-            <SvgIcon
-              src={'/assets/icons/heart.svg'}
-              width="32px"
-              height="32px"
-              fill={isFavorite ? '#FE1111' : '#c3c3c3'}
-            />
-          </StyledFabButton>
         </InformationsContainer>
       </HighLight>
 

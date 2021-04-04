@@ -11,7 +11,9 @@ const HomePage = () => {
   const { characters, currentPage } = dataCharacters;
   const { data: favoriteData } = useSelector((state: RootState) => state.favoriteCharacters);
   const { favoriteCharacters } = favoriteData;
-
+  const {
+    data: { editedCharacters },
+  } = useSelector((state: RootState) => state.editedCharacters);
   useEffect(() => {
     if (!characters) {
       dispatch(listCharacters(undefined, currentPage));
@@ -35,6 +37,7 @@ const HomePage = () => {
           onMore={handleMoreCharacters}
           currentPage={currentPage}
           loadingMore={loading['loading.list']}
+          editedCharacters={editedCharacters}
         />
       </main>
     </>

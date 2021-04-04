@@ -5,11 +5,11 @@ export const StyledInput = styled.input`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 0 53px 0 53px;
+  padding: 0 12px 0 12px;
   border: none;
   box-sizing: border-box;
   border-radius: ${Dimensions.defaultBorderRadius};
-  font-size: 14px;
+  font-size: 18px;
   font-style: normal;
   height: 60px;
   font-weight: normal;
@@ -24,6 +24,12 @@ export const StyledInput = styled.input`
   }
 
   ${props =>
+    props.leftIcon &&
+    css`
+      padding-left: 53px;
+    `}
+
+  ${props =>
     props.error &&
     css`
       border: 1px solid ${Behaviors.errorColor};
@@ -36,6 +42,12 @@ export const StyledInput = styled.input`
     css`
       background-color: ${Behaviors.disabledBackground};
       cursor: not-allowed;
+    `}
+
+    ${props =>
+    props.readOnly &&
+    css`
+      background-color: ${Behaviors.darkBackground};
     `}
 `;
 
@@ -79,6 +91,7 @@ export const DropDown = styled.div`
   overflow-y: auto;
   box-shadow: ${Behaviors.defaultBoxShadow};
   border-radius: ${Dimensions.defaultBorderRadius};
+  z-index: 2;
 `;
 
 export const DropDownContainer = styled.div`

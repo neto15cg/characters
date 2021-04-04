@@ -1,4 +1,4 @@
-import { CharactersResponse, FavoriteCharacterType } from '../../store/ducks/types';
+import { CharactersResponse, EditedCharactersType, FavoriteCharacterType } from '../../store/ducks/types';
 
 export interface HomeProps {
   characters: CharactersResponse;
@@ -7,8 +7,9 @@ export interface HomeProps {
   currentPage: number;
   loadingMore: boolean;
   error?: any;
-  onRefreshRequest?: () => void;
   onMore: (page: number, search?: string) => void;
+  onRefreshRequest?: () => void;
+  editedCharacters?: EditedCharactersType[];
 }
 
 export interface SearchProps {
