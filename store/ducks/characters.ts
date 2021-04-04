@@ -115,9 +115,7 @@ export function listCharacters(
     const offset = page * limit - limit;
     dispatch({ type: CharactersTypes.ListCharactersStart });
 
-    const url = `characters/?api_key=79fb5af70ddd357a6dfd87aec0af52a814deee1f&format=json&limit=${limit}&offset=${offset}${
-      search ? `&filter=name:${search}` : ''
-    }`;
+    const url = `characters?limit=${limit}&offset=${offset}${search ? `&search=${search}` : ''}`;
     return new Promise((resolve, reject) => {
       api
         .get(url)
@@ -137,7 +135,7 @@ export function listCharacters(
 export function getCharacter(characterId: string): ThunkAction<Promise<any>, RootState, any, any> {
   return async (dispatch): Promise<any> => {
     dispatch({ type: CharactersTypes.GetCharacterStart });
-    const url = `character/${characterId}/?api_key=79fb5af70ddd357a6dfd87aec0af52a814deee1f&format=json`;
+    const url = `character?id=${characterId}`;
     return new Promise((resolve, reject) => {
       api
         .get(url)

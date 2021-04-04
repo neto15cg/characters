@@ -23,7 +23,7 @@ const Search = ({ onClickResults, onClear, loading, onClickOption }: SearchProps
 
   const handleGetPredictions = async (search: string) => {
     try {
-      const url = `characters/?api_key=79fb5af70ddd357a6dfd87aec0af52a814deee1f&format=json&limit=${3}&offset=${0}&filter=name:${search}`;
+      const url = `characters?limit=${3}&offset=${0}&filter=name:${search}`;
       const response = await api.get(url);
       setPredictions(response.data);
       setSearchQuery(search);

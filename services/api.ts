@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://comicvine.gamespot.com/api/',
+  baseURL: 'https://proxy-api-challenge.herokuapp.com/',
 });
 
 export default api;
