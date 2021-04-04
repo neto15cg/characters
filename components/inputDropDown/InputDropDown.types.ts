@@ -1,6 +1,6 @@
 export interface InputDropDownOption {
   label: string;
-  value: string;
+  value: string | number;
   img?: string;
 }
 
@@ -36,6 +36,7 @@ export interface InputProps {
   onClear?: (options: InputDropDownOption[]) => void;
   onInput?: (event: Event) => void;
   onBlur?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onFocus?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   autoComplete?: string;
   autoFocus?: boolean;
   placeholder?: string;
@@ -45,6 +46,9 @@ export interface InputProps {
   loading?: boolean;
   options?: InputDropDownOption[];
   onClickOption?: (option: InputDropDownOption) => void;
+  onClickAllResult?: () => void;
   leftIcon?: any;
   disabled?: boolean;
+  isOpenDropDown?: boolean;
+  onClickOutside?: () => void;
 }

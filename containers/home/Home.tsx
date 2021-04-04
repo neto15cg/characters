@@ -13,11 +13,11 @@ import {
   CharactersContainer,
   EmptyStateContainer,
   FilterContainer,
-  InputContainer,
   SelectContainer,
 } from './Home.styles';
 import { HomeProps } from './Home.types';
 import { LoadMore } from '../../components/loadingMore/LoadingMore';
+import Search from './Search';
 
 const Home = ({
   characters,
@@ -30,11 +30,9 @@ const Home = ({
   onMore,
 }: HomeProps) => {
   const [filter, setFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const router = useRouter();
-  const handleClickOption = (option: InputDropDownOption) => {
-    console.log(option);
-  };
 
   const handleClickCard = character => {
     router.push(`/4005-${character.id}`);
@@ -50,9 +48,21 @@ const Home = ({
     setFilter(event?.target?.value || 'all');
   };
 
-  const handleMoreCharacters = (page: number) => {
+  const handleMoreCharacters = (page: number, search?: string) => {
     if (onMore) {
-      onMore(page);
+      onMore(page, search ?? searchQuery);
+    }
+  };
+
+  const handleClickResultsSearch = (search: string) => {
+    setSearchQuery(search);
+    handleMoreCharacters(1, search);
+  };
+
+  const handleClearSearch = () => {
+    if (searchQuery) {
+      handleMoreCharacters(1, '');
+      setSearchQuery('');
     }
   };
 
@@ -63,7 +73,37 @@ const Home = ({
       Math.round(listOfCharacters.number_of_total_results / listOfCharacters.limit)) ||
     1;
 
-  console.log(listOfCharacters);
+  const ListCharacters = () => {
+    return (
+      <>
+        {listOfCharacters?.results.length === 0 ? (
+          <EmptyStateContainer>We do not found characters by filter</EmptyStateContainer>
+        ) : (
+          <>
+            {listOfCharacters?.results.length > 0 && (
+              <AmountCharacters>
+                {listOfCharacters?.results.length} characters of{' '}
+                {listOfCharacters?.number_of_total_results || listOfCharacters.results.length}
+              </AmountCharacters>
+            )}
+            <CharactersContainer>
+              {listOfCharacters?.results?.map(character => (
+                <CardCharacter
+                  onClick={handleClickCard}
+                  className="card-character"
+                  key={character.id}
+                  character={character}
+                />
+              ))}
+            </CharactersContainer>
+            {listOfCharacters && numberOfPage > currentPage && (
+              <LoadMore isFetching={loadingMore} page={currentPage} callback={handleMoreCharacters} />
+            )}
+          </>
+        )}
+      </>
+    );
+  };
 
   if (error) {
     return (
@@ -76,73 +116,24 @@ const Home = ({
     );
   }
 
-  if (firstLoading) {
-    return (
-      <Section>
-        <LoadingContainer>
-          <BasicLoading size={48} />
-        </LoadingContainer>
-      </Section>
-    );
-  }
-
   return (
     <Section>
       <FilterContainer>
-        <InputContainer>
-          <InputDropDown
-            type="text"
-            name="search"
-            leftIcon="assets/icons/search.svg"
-            placeholder="Search for a character"
-            onClickOption={handleClickOption}
-            // options={[
-            //   {
-            //     label: 'Dream girl',
-            //     value: '12312312',
-            //     img: 'https://comicvine1.cbsistatic.com/uploads/square_avatar/1/15776/891174-pi.jpg',
-            //   },
-            //   {
-            //     label: 'Dream girl',
-            //     value: '123123122',
-            //     img: 'https://comicvine1.cbsistatic.com/uploads/square_avatar/1/15776/891174-pi.jpg',
-            //   },
-            //   {
-            //     label: 'Dream girl',
-            //     value: '123122312',
-            //     img: 'https://comicvine1.cbsistatic.com/uploads/square_avatar/1/15776/891174-pi.jpg',
-            //   },
-            // ]}
-          />
-        </InputContainer>
+        <Search
+          onClickResults={handleClickResultsSearch}
+          onClear={handleClearSearch}
+          loading={loadingMore || firstLoading}
+        />
         <SelectContainer>
           <Select name="filter" options={OptionsFilter} value={filter} onChange={handleChangeFilter} />
         </SelectContainer>
       </FilterContainer>
-      {listOfCharacters?.results.length === 0 ? (
-        <EmptyStateContainer>We do not found characters by filter</EmptyStateContainer>
+      {!firstLoading ? (
+        <ListCharacters />
       ) : (
-        <>
-          {listOfCharacters?.results.length > 0 && (
-            <AmountCharacters>
-              {listOfCharacters?.results.length} characters of{' '}
-              {listOfCharacters?.number_of_total_results || listOfCharacters.results.length}
-            </AmountCharacters>
-          )}
-          <CharactersContainer>
-            {listOfCharacters?.results?.map(character => (
-              <CardCharacter
-                onClick={handleClickCard}
-                className="card-character"
-                key={character.id}
-                character={character}
-              />
-            ))}
-          </CharactersContainer>
-          {characters && numberOfPage > currentPage && (
-            <LoadMore isFetching={loadingMore} page={currentPage} callback={handleMoreCharacters} />
-          )}
-        </>
+        <LoadingContainer>
+          <BasicLoading size={48} />
+        </LoadingContainer>
       )}
     </Section>
   );

@@ -68,7 +68,7 @@ export const charactersReducer: Reducer<CharactersState> = createReducer(Initial
   },
   [CharactersTypes.ListCharactersSuccess](state: CharactersState, action: Actions['ListCharactersSuccess']) {
     state.loading['loading.list'] = false;
-    if (!state.data.characters) {
+    if (!state.data.characters || action.payload.offset === 0) {
       state.data.characters = action.payload;
       return state;
     }
@@ -106,11 +106,18 @@ export const charactersReducer: Reducer<CharactersState> = createReducer(Initial
   },
 });
 
-export function listCharacters(page = 1, limit: number = 40): ThunkAction<Promise<any>, RootState, any, any> {
+export function listCharacters(
+  search?: string,
+  page = 1,
+  limit: number = 40,
+): ThunkAction<Promise<any>, RootState, any, any> {
   return async (dispatch): Promise<any> => {
     const offset = page * limit - limit;
     dispatch({ type: CharactersTypes.ListCharactersStart });
-    const url = `characters/?api_key=79fb5af70ddd357a6dfd87aec0af52a814deee1f&format=json&limit=${limit}&offset=${offset}`;
+
+    const url = `characters/?api_key=79fb5af70ddd357a6dfd87aec0af52a814deee1f&format=json&limit=${limit}&offset=${offset}${
+      search ? `&filter=name:${search}` : ''
+    }`;
     return new Promise((resolve, reject) => {
       api
         .get(url)

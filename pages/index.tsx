@@ -14,11 +14,11 @@ const HomePage = () => {
 
   useEffect(() => {
     if (!characters) {
-      dispatch(listCharacters(currentPage));
+      dispatch(listCharacters(undefined, currentPage));
     }
   }, [dispatch]);
 
-  const handleMoreCharacters = (page: number) => dispatch(listCharacters(page));
+  const handleMoreCharacters = (page: number, search?: string) => dispatch(listCharacters(search, page));
 
   const handleRefresh = () => handleMoreCharacters(currentPage);
 

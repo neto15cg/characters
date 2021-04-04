@@ -1,12 +1,15 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import { Behaviors } from '../../utils/theme';
+import useClickOutside from '../../utils/useClickOutside';
 import { Field, StyledLabel, StyledError } from '../common/Common';
 import SvgIcon from '../svgIcon/SvgIcon';
 import {
+  AllResults,
   BasicLoading,
   ButtonClearContainer,
   DropDown,
   DropDownContainer,
+  EmptyOption,
   InputContainer,
   InputIconContainer,
   InputLoadingContainer,
@@ -30,7 +33,18 @@ const InputDropDown = (props: InputProps, ref) => {
     leftIcon,
     disabled,
     placeholder,
+    onClickAllResult,
+    onFocus,
+    onBlur,
+    isOpenDropDown,
+    onClickOutside,
   } = props;
+
+  const dropDrownRef = useRef(null);
+
+  useClickOutside(dropDrownRef, () => {
+    onClickOutside && onClickOutside();
+  });
 
   const handleClear = () => {
     // @ts-ignore
@@ -46,9 +60,9 @@ const InputDropDown = (props: InputProps, ref) => {
 
   const handleClickOption = (option: InputDropDownOption) => () => onClickOption && onClickOption(option);
 
-  const hasOptions = options && options.length > 0;
+  const hasOptions = options;
   return (
-    <Field>
+    <Field ref={dropDrownRef}>
       <StyledLabel htmlFor={id} error={error}>
         {label}
       </StyledLabel>
@@ -67,6 +81,8 @@ const InputDropDown = (props: InputProps, ref) => {
           disabled={disabled}
           error={error}
           placeholder={placeholder}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
         {loading && (
           <InputLoadingContainer>
@@ -79,15 +95,26 @@ const InputDropDown = (props: InputProps, ref) => {
           </ButtonClearContainer>
         )}
       </InputContainer>
-      {hasOptions && (
+      {hasOptions && isOpenDropDown && (
         <DropDown data-testid="drop-down-input">
           <DropDownContainer>
-            {options.map((option, i) => (
-              <StyledOption data-testid={`drop-down-item-${i}`} onClick={handleClickOption(option)} key={option.value}>
-                {option.img && <img src={option.img} width="80px" height="80px" alt={option.label} />}
-                {option.label}
-              </StyledOption>
-            ))}
+            {options.length > 0 ? (
+              <>
+                {options.map((option, i) => (
+                  <StyledOption
+                    data-testid={`drop-down-item-${i}`}
+                    onClick={handleClickOption(option)}
+                    isClicked={!!onClickOption}
+                    key={option.value}>
+                    {option.img && <img src={option.img} width="80px" height="80px" alt={option.label} />}
+                    {option.label}
+                  </StyledOption>
+                ))}
+                {onClickAllResult && <AllResults onClick={onClickAllResult}>See results</AllResults>}
+              </>
+            ) : (
+              <EmptyOption>Not found characters</EmptyOption>
+            )}
           </DropDownContainer>
         </DropDown>
       )}

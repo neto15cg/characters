@@ -89,12 +89,17 @@ export const StyledOption = styled.div`
   display: flex;
   align-items: center;
   padding: 4px 4px;
-  cursor: pointer;
   transition: background-color 150ms ease;
   color: ${Behaviors.darkText};
   font-family: ${Fonts.fontFamily};
   font-weight: medium;
   font-size: 18px;
+
+  ${props =>
+    props.isClicked &&
+    css`
+      cursor: pointer;
+    `}
 
   &:hover {
     background-color: #4747470d;
@@ -102,6 +107,24 @@ export const StyledOption = styled.div`
   }
   img {
     margin-right: 8px;
+  }
+`;
+
+export const AllResults = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 4px 4px;
+  margin-top: 16px;
+  transition: background-color 150ms ease;
+  color: ${Behaviors.darkText};
+  font-family: ${Fonts.fontFamily};
+  font-weight: medium;
+  font-size: 18px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #4747470d;
+    border-radius: 4px;
   }
 `;
 
@@ -121,4 +144,8 @@ export const ButtonClearContainer = styled.div`
   &:hover {
     background-color: ${Behaviors.darkBackground};
   }
+`;
+
+export const EmptyOption = styled.div`
+  color: ${Behaviors.darkText};
 `;
