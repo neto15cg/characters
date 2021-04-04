@@ -1,12 +1,15 @@
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../containers/header/Header';
 import Home from '../containers/home/Home';
 import { listCharacters } from '../store/ducks/characters';
 import { RootState } from '../store/ducks/state';
+import { CharacterType } from '../store/ducks/types';
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { data: dataCharacters, loading, error } = useSelector((state: RootState) => state.characters);
   const { characters, currentPage } = dataCharacters;
   const { data: favoriteData } = useSelector((state: RootState) => state.favoriteCharacters);
@@ -14,6 +17,12 @@ const HomePage = () => {
   const {
     data: { editedCharacters },
   } = useSelector((state: RootState) => state.editedCharacters);
+
+  const handleNavigate = (id: number) => {
+    dispatch(listCharacters(undefined, 1));
+    router.push(`/4005-${id}`);
+  };
+
   useEffect(() => {
     if (!characters) {
       dispatch(listCharacters(undefined, currentPage));
@@ -38,6 +47,7 @@ const HomePage = () => {
           currentPage={currentPage}
           loadingMore={loading['loading.list']}
           editedCharacters={editedCharacters}
+          onNavigateToDetail={handleNavigate}
         />
       </main>
     </>

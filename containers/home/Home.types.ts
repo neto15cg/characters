@@ -6,6 +6,7 @@ export interface HomeProps {
   favoriteCharacters: FavoriteCharacterType[];
   currentPage: number;
   loadingMore: boolean;
+  onNavigateToDetail: (id: number) => void;
   error?: any;
   onMore: (page: number, search?: string) => void;
   onRefreshRequest?: () => void;
@@ -15,5 +16,6 @@ export interface HomeProps {
 export interface SearchProps {
   onClickResults: (search: string) => void;
   onClear: () => void;
+  onClickOption: (option) => void;
   loading?: boolean;
 }

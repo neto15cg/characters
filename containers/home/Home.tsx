@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import BasicLoading from '../../components/basicLoading/BasicLoading';
 import CardCharacter from '../../components/cardCharacter/CardCharacter';
 import { ErrorContainer, ErrorSubTitle, ErrorTitle, LoadingContainer } from '../../components/common/Common';
@@ -27,15 +26,12 @@ const Home = ({
   currentPage,
   onMore,
   editedCharacters,
+  onNavigateToDetail,
 }: HomeProps) => {
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const router = useRouter();
-
-  const handleClickCard = character => {
-    router.push(`/4005-${character.id}`);
-  };
+  const handleClickCard = (id: number) => onNavigateToDetail(id);
 
   const handleReloadPage = () => {
     if (onRefreshRequest) {
@@ -97,7 +93,7 @@ const Home = ({
             <CharactersContainer>
               {listToRender?.results?.map(character => (
                 <CardCharacter
-                  onClick={handleClickCard}
+                  onClick={() => handleClickCard(character.id)}
                   className="card-character"
                   key={character.id}
                   character={character}
@@ -131,6 +127,7 @@ const Home = ({
           onClickResults={handleClickResultsSearch}
           onClear={handleClearSearch}
           loading={loadingMore || firstLoading}
+          onClickOption={option => handleClickCard(option.value)}
         />
         <SelectContainer>
           <Select name="filter" options={OptionsFilter} value={filter} onChange={handleChangeFilter} />

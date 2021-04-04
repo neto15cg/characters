@@ -6,7 +6,7 @@ import useDebounce from '../../utils/useDebounce';
 import { InputContainer } from './Home.styles';
 import { SearchProps } from './Home.types';
 
-const Search = ({ onClickResults, onClear, loading }: SearchProps) => {
+const Search = ({ onClickResults, onClear, loading, onClickOption }: SearchProps) => {
   const [predictions, setPredictions] = useState<CharactersResponse>(undefined);
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,6 +18,8 @@ const Search = ({ onClickResults, onClear, loading }: SearchProps) => {
     onClear();
     setFocused(false);
   };
+
+  const handleClickOption = option => onClickOption(option);
 
   const handleGetPredictions = async (search: string) => {
     try {
@@ -76,6 +78,7 @@ const Search = ({ onClickResults, onClear, loading }: SearchProps) => {
           img: character.image.icon_url,
         }))}
         onClickAllResult={handleSeeResults}
+        onClickOption={handleClickOption}
       />
     </InputContainer>
   );
