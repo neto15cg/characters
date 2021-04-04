@@ -19,7 +19,6 @@ process.on('unhandledRejection', (e: any) => {
   console.error(e);
 });
 
-const consoleError = console.error;
 console.error = jest.fn((...args) => {
   const [error] = args;
   const skipMessages = [
