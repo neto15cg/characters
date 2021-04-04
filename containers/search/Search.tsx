@@ -3,8 +3,8 @@ import InputDropDown from '../../components/inputDropDown/InputDropDown';
 import api from '../../services/api';
 import { CharactersResponse } from '../../store/ducks/types';
 import useDebounce from '../../utils/useDebounce';
-import { InputContainer } from './Home.styles';
-import { SearchProps } from './Home.types';
+import { InputContainer } from './Search.styles';
+import { SearchProps } from './Search.types';
 
 const Search = ({ onClickResults, onClear, loading, onClickOption }: SearchProps) => {
   const [predictions, setPredictions] = useState<CharactersResponse>(undefined);

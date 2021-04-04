@@ -14,7 +14,7 @@ import {
 } from './Home.styles';
 import { HomeProps } from './Home.types';
 import { LoadMore } from '../../components/loadingMore/LoadingMore';
-import Search from './Search';
+import Search from '../search/Search';
 
 const Home = ({
   characters,

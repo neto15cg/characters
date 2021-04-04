@@ -1,16 +1,6 @@
 import styled from 'styled-components';
 import { Behaviors, device, Fonts } from '../../utils/theme';
 
-export const InputContainer = styled.div`
-  max-width: 340px;
-  width: 100%;
-  padding: 0 8px;
-
-  ${device.mobile} {
-    max-width: 100%;
-  }
-`;
-
 export const AmountCharacters = styled.p`
   display: flex;
   align-items: center;
