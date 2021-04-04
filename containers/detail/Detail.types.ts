@@ -2,7 +2,7 @@ import { CharacterDetailType, CharacterDetailTypeResponse } from '../../store/du
 
 export interface DetailProps {
   character: CharacterDetailTypeResponse;
-  loading: boolean;
+  loading?: boolean;
   onGoBack?: () => void;
   error?: any;
   onRefreshRequest?: () => void;

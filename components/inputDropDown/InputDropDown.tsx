@@ -76,7 +76,7 @@ const InputDropDown = (props: InputProps, ref) => {
           </InputIconContainer>
         )}
         <StyledInput
-          id="drop-down"
+          id={id ?? 'drop-down'}
           onChange={onChange}
           ref={ref}
           data-testid={testId}

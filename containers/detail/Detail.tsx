@@ -43,6 +43,7 @@ const Detail = ({
   const onSubmit = data => {
     const updateCharacter = { ...character, ...data, gender: Number(data.gender) };
     onSaveEdit(updateCharacter);
+
     setIsEditing(false);
   };
 
@@ -119,7 +120,7 @@ const Detail = ({
         </HighLightImgContainer>
         <InformationsContainer>
           <ButtonsContainer>
-            <StyledFabButton onClick={handleFavorite}>
+            <StyledFabButton onClick={handleFavorite} data-testid="favorite-button">
               <SvgIcon
                 src={'/assets/icons/heart.svg'}
                 width="32px"
@@ -128,7 +129,7 @@ const Detail = ({
               />
             </StyledFabButton>
             {!isEditing && (
-              <StyledFabButton onClick={handleEdit}>
+              <StyledFabButton onClick={handleEdit} data-testid="edit-button">
                 <SvgIcon src={'/assets/icons/edit.svg'} width="32px" height="32px" fill={'#6563ff'} />
               </StyledFabButton>
             )}
@@ -136,15 +137,15 @@ const Detail = ({
 
           {isEditing ? (
             <form onSubmit={handleSubmit(onSubmit)}>
-              <InputDropDown type="text" name="name" label="Name" ref={register} />
+              <InputDropDown type="text" name="name" id="name" label="Name" ref={register} />
               <br />
-              <Select name="gender" label="Aliases" options={OptionsFilter} ref={register} />
+              <Select name="gender" id="gender" label="Gender" options={OptionsFilter} ref={register} />
               <br />
-              <InputDropDown type="text" name="real_name" label="Real name" ref={register} />
+              <InputDropDown type="text" name="real_name" id="real_name" label="Real name" ref={register} />
               <br />
-              <InputDropDown type="text" name="aliases" label="Aliases" ref={register} />
+              <InputDropDown type="text" name="aliases" id="aliases" label="Aliases" ref={register} />
               <br />
-              <InputDropDown type="text" name="birth" label="Birth" ref={register} />
+              <InputDropDown type="text" name="birth" id="birth" label="Birth" ref={register} />
               <br />
               <ButtonsFormContainer>
                 <Button type="submit">Save</Button>
