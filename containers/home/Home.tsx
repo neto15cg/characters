@@ -31,7 +31,7 @@ const Home = ({
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleClickCard = (id: number) => onNavigateToDetail(id);
+  const handleClickCard = (id: number) => onNavigateToDetail && onNavigateToDetail(id);
 
   const handleReloadPage = () => {
     if (onRefreshRequest) {
@@ -43,7 +43,7 @@ const Home = ({
     setFilter(event?.target?.value || 'all');
   };
 
-  const handleMoreCharacters = (page: number, search?: string) => {
+  const handleGetCharacters = (page: number, search?: string) => {
     if (onMore) {
       onMore(page, search ?? searchQuery);
     }
@@ -51,12 +51,12 @@ const Home = ({
 
   const handleClickResultsSearch = (search: string) => {
     setSearchQuery(search);
-    handleMoreCharacters(1, search);
+    handleGetCharacters(1, search);
   };
 
   const handleClearSearch = () => {
     if (searchQuery) {
-      handleMoreCharacters(1, '');
+      handleGetCharacters(1, '');
       setSearchQuery('');
     }
   };
@@ -70,7 +70,7 @@ const Home = ({
       1;
 
     const mergedResults = listOfCharacters?.results.map(character => {
-      const findEdited = editedCharacters.find(editedCharacter => editedCharacter.id === character.id);
+      const findEdited = editedCharacters?.find(editedCharacter => editedCharacter.id === character.id);
       if (!findEdited) {
         return character;
       }
@@ -97,11 +97,12 @@ const Home = ({
                   className="card-character"
                   key={character.id}
                   character={character}
+                  testId={`${character.name}-card`}
                 />
               ))}
             </CharactersContainer>
-            {listToRender && numberOfPage > currentPage && (
-              <LoadMore isFetching={loadingMore} page={currentPage} callback={handleMoreCharacters} />
+            {onMore && listToRender && numberOfPage > currentPage && (
+              <LoadMore isFetching={loadingMore} page={currentPage} callback={handleGetCharacters} />
             )}
           </>
         )}
@@ -130,7 +131,13 @@ const Home = ({
           onClickOption={option => handleClickCard(option.value)}
         />
         <SelectContainer>
-          <Select name="filter" options={OptionsFilter} value={filter} onChange={handleChangeFilter} />
+          <Select
+            name="filter"
+            testId="favorite-filter"
+            options={OptionsFilter}
+            value={filter}
+            onChange={handleChangeFilter}
+          />
         </SelectContainer>
       </FilterContainer>
       {!firstLoading ? (

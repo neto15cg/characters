@@ -2,13 +2,13 @@ import { CharactersResponse, EditedCharactersType, FavoriteCharacterType } from 
 
 export interface HomeProps {
   characters: CharactersResponse;
-  firstLoading: boolean;
   favoriteCharacters: FavoriteCharacterType[];
   currentPage: number;
-  loadingMore: boolean;
-  onNavigateToDetail: (id: number) => void;
-  error?: any;
-  onMore: (page: number, search?: string) => void;
+  onMore?: (page: number, search?: string) => void;
+  onNavigateToDetail?: (id: number) => void;
   onRefreshRequest?: () => void;
   editedCharacters?: EditedCharactersType[];
+  loadingMore?: boolean;
+  firstLoading?: boolean;
+  error?: any;
 }

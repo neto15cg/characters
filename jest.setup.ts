@@ -4,6 +4,23 @@ require('jest-fetch-mock').enableMocks();
 
 jest.mock('axios');
 
+// @ts-ignore
+global.IntersectionObserver = class IntersectionObserver {
+  constructor() {}
+
+  observe() {
+    return null;
+  }
+
+  disconnect() {
+    return null;
+  }
+
+  unobserve() {
+    return null;
+  }
+};
+
 declare let process: { on: (a: string, b: any) => void };
 
 afterEach(() => {
