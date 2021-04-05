@@ -1197,3 +1197,5 @@ export const MockDetail = {
   },
   version: '1.0',
 };
+
+export const MocKUrlList = 'https://proxy-api-challenge.herokuapp.com/characters?limit=40&offset=0';
