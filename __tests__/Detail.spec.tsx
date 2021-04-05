@@ -3,10 +3,10 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { PersistGate } from 'redux-persist/integration/react';
 import { useStore } from 'react-redux';
 
-import { wrapper } from '../../store';
-import { mockAxios } from '../../utils/testHelper';
+import { wrapper } from '../store';
+import { mockAxios } from '../utils/testHelper';
 import { MockDetail } from './fixtures';
-import DetailPage from '../[pid]';
+import DetailPage from '../pages/[pid]';
 
 function Detail() {
   // @ts-ignore

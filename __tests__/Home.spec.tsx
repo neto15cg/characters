@@ -1,10 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { PersistGate } from 'redux-persist/integration/react';
-import HomePage from '..';
-import { wrapper } from '../../store';
+import HomePage from '../pages';
+import { wrapper } from '../store';
 import { useStore } from 'react-redux';
-import { mockAxios } from '../../utils/testHelper';
+import { mockAxios } from '../utils/testHelper';
 import { HomeMock } from './fixtures';
 
 function Home() {
