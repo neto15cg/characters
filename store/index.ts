@@ -13,8 +13,7 @@ const bindMiddleware = middleware => {
 
 const makeStore = ({ isServer }): any => {
   if (isServer) {
-    // For debug, add middle 'logger' import logger from 'redux-logger';
-
+    // For debug, add middleware 'logger' import logger from 'redux-logger';
     return createStore(rootReducer, bindMiddleware([thunkMiddleware]));
   } else {
     const { persistStore, persistReducer } = require('redux-persist');
@@ -27,7 +26,7 @@ const makeStore = ({ isServer }): any => {
     };
 
     const persistedReducer = persistReducer(persistConfig, rootReducer);
-    // For debug, add middle 'logger' import logger from 'redux-logger';
+    // For debug, add middleware 'logger' import logger from 'redux-logger';
     const store: any = createStore(persistedReducer, {}, bindMiddleware([thunkMiddleware]));
 
     store.__persistor = persistStore(store);
