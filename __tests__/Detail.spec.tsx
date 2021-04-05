@@ -32,7 +32,7 @@ jest.mock('next/router', () => ({
   },
 }));
 
-describe('HomePage', () => {
+describe('DetailPage', () => {
   beforeEach(() => {
     mockAxios.get.mockImplementation(async () => {
       return {
