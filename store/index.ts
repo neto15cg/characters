@@ -1,6 +1,5 @@
 import { createWrapper } from 'next-redux-wrapper';
 import { applyMiddleware, createStore } from 'redux';
-import logger from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { rootReducer } from './ducks';
 
@@ -14,7 +13,9 @@ const bindMiddleware = middleware => {
 
 const makeStore = ({ isServer }): any => {
   if (isServer) {
-    return createStore(rootReducer, bindMiddleware([thunkMiddleware, logger]));
+    // For debug, add middle 'logger' import logger from 'redux-logger';
+
+    return createStore(rootReducer, bindMiddleware([thunkMiddleware]));
   } else {
     const { persistStore, persistReducer } = require('redux-persist');
     const storage = require('redux-persist/lib/storage').default;
@@ -26,8 +27,8 @@ const makeStore = ({ isServer }): any => {
     };
 
     const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-    const store: any = createStore(persistedReducer, {}, bindMiddleware([thunkMiddleware, logger]));
+    // For debug, add middle 'logger' import logger from 'redux-logger';
+    const store: any = createStore(persistedReducer, {}, bindMiddleware([thunkMiddleware]));
 
     store.__persistor = persistStore(store);
 

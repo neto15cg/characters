@@ -15,7 +15,7 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   coveragePathIgnorePatterns: ['<rootDir>/utils/', '<rootDir>/cypress'],
 
-  collectCoverage: true,
+  collectCoverage: false,
   testMatch: ['**/?(*.)+(spec|test).tsx'],
   setupFilesAfterEnv: ['./jest.setup.ts'],
   moduleNameMapper: {

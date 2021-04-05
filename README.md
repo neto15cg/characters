@@ -1,17 +1,18 @@
 # Characters
 
-- Access the application statement at the [link]()
+- Access the application statement at the [link](https://characters-six.vercel.app/)
 
 ## Description
 
 The challenge is to create a list of characters page using nextjs with the following technologies:
 
-- Typescript
 - React
+- NextJs
+- Typescript
 - Hooks
 - NextJS
 - Styled Components
-- Redux & Redux Thunk
+- Redux & Redux Thunk & Ducks Pattern
 - Axios
 
 # Setup

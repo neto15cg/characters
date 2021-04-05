@@ -23,9 +23,8 @@ const DetailPage = () => {
   const { favoriteCharacters } = favoriteData;
 
   const handleGetCharacter = () => {
-    const pid: any = router?.query?.pid;
     if (pid) {
-      dispatch(getCharacter(pid));
+      dispatch(getCharacter(pid as string));
     }
   };
 
